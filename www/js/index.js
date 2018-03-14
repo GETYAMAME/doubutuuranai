@@ -101,10 +101,14 @@ document.addEventListener('init', function(event) {
     if (page.matches('#redirect')) {
         var chkAnimalName = localStorage.getItem('animalName');
         if(chkAnimalName){
+            //2回目以降遷移時
             document.querySelector('#navigator').resetToPage('page2.html',{ animation: "none" });
             // 通常遷移時（アプリ初回起動時以外）の前画面を読込
             document.querySelector('#navigator').insertPage(0,'page1.html');
-        } 
+        } else {
+            //初回遷移時
+            document.querySelector('#navigator').resetToPage('page1.html',{ animation: "none" });
+        }
     } else if (page.matches('#first-page')) {
         // 診断画面：初期表示処理
         page.querySelector('#push-button').onclick = function() {
@@ -120,8 +124,8 @@ document.addEventListener('init', function(event) {
             var birthDayMonth = parseInt(aryBirthDay[MM]);
             var birthDayDay = parseInt(aryBirthDay[DD]);
             // 日付範囲チェック
-            if (birthDayYear < 1950 || 2010 < birthDayYear){
-                ons.notification.alert({message: '大変申し訳ありません。誕生日は1950～2010年までしか対応しておりません。',title: 'エラー'});
+            if (birthDayYear < 1951 || 2010 < birthDayYear){
+                ons.notification.alert({message: '大変申し訳ありません。誕生日は1951～2010年までしか対応しておりません。',title: 'エラー'});
                 return 0;
             }
             // 生年月日の年、月より動物コードを取得
