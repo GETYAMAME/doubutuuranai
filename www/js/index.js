@@ -221,3 +221,38 @@ function getDiff() {
 
     return daysDiff;
 }
+
+// =====================
+//  全画面共通イベント
+// =====================
+
+// 全画面共通イベント用変数
+var commonEvent = {};
+commonEvent.backgroundTime;
+
+/** 
+ * バックグラウンド移動時（アプリ終了）
+ */
+document.addEventListener("pause", function() {
+   commonEvent.backgroundTime = new Date();
+}, false);
+
+/** 
+ * フォアグラウンド移動時（アプリ再起動）
+ */
+document.addEventListener("resume", function(){
+    var nowTime = new Date();
+     if (1000 <= nowTime - commonEvent.backgroundTime) {
+        // 1秒以上バックグラウンドに回った場合
+        var chkAnimalName = localStorage.getItem('animalName');
+        if(chkAnimalName){
+            //2回目以降遷移時
+            document.querySelector('#navigator').resetToPage('page2.html',{ animation: "none" });
+            // 通常遷移時（アプリ初回起動時以外）の前画面を読込
+            document.querySelector('#navigator').insertPage(0,'page1.html');
+        } else {
+            //初回遷移時
+            document.querySelector('#navigator').resetToPage('page1.html',{ animation: "none" });
+        }
+    }
+}, false);
